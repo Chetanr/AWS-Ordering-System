@@ -15,7 +15,7 @@ New Order
 </script>
 
 <body>
-<link rel = "stylesheet" href = "<?php echo base_url('assets/css/newOrder.css')?>">
+<link rel = "stylesheet"  href="{{ url_for('static', filename='newOrder.css') }}">
     <div id= "order-form">
         <form id="order-form" action = "<?php echo site_url('customer/addToCart'); ?>" method = "POST">
         <label id = "invalid-label" name = "invalid"><?php echo isset($error) ? $error : ''; ?></label>

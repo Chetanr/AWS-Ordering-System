@@ -9,7 +9,7 @@ Add Customer
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
    <body>
-    <link rel = "stylesheet" href = "<?php echo base_url('assets/css/addCustomer.css')?>">
+    <link rel = "stylesheet"  href="{{ url_for('static', filename='addCustomer.css') }}" >
     <form id="customer-form" action = "<?php echo site_url('admin/addCustomers'); ?>" method = "POST">
         <br>
         <br>

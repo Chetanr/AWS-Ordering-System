@@ -18,7 +18,7 @@
     ?>
 
     <body>
-    <link rel = "stylesheet" href = "<?php echo base_url('assets/css/custResponseLabel.css')?>">
+    <link rel = "stylesheet"  href="{{ url_for('static', filename='custResponseLabel.css') }}" >
         <div id = "label">
             <label id = "response-label" name = "invalid"><?php echo isset($data) ? $data : ''; ?></label>
         </div>

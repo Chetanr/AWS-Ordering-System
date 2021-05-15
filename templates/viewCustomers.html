@@ -10,7 +10,7 @@ View Customers
 </head>
 
 <body>
-    <link rel = "stylesheet" href = "<?php echo base_url('assets/css/viewPreviousOrders.css')?>">
+    <link rel = "stylesheet"  href="{{ url_for('static', filename='viewPreviousOrders.css') }}" >
     <br>
         <div class = "table-div">
         <form method = "POST" action = "<?php echo site_url('admin/editOrder');?>">
