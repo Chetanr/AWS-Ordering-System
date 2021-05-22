@@ -1,39 +1,49 @@
-# Copyright 2018 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+from flask import *
+import boto3
+import json
+# import requests
+from botocore.exceptions import ClientError
+from boto3.dynamodb.conditions import Key
+from decimal import Decimal
 
-import datetime
 
-from flask import Flask, render_template, request
-# from google.cloud import datastore
-import google.oauth2.id_token
 
-# firebase_request_adapter = requests.Request()
 
-# [START gae_python38_datastore_store_and_fetch_user_times]
-# [START gae_python3_datastore_store_and_fetch_user_times]
-# datastore_client = datastore.Client()
-
-# [END gae_python3_datastore_store_and_fetch_user_times]
-# [END gae_python38_datastore_store_and_fetch_user_times]
 app = Flask(__name__)
+
+app.secret_key = "0123456789"
 
 
 
 @app.route('/')
 def login():
     return render_template(
-        'login.html')
+        'custHead.html')
+
+@app.route('/viewOrders')
+def viewOrders():
+    return render_template('viewOrders.html')
+
+@app.route('/newOrder')
+def newOrder():
+    return render_template('newOrder.html')
+
+@app.route('/previousOrders')
+def previousOrders():
+    return render_template('viewPreviousOrders.html')
+
+@app.route('/changePassword')
+def changePassword():
+    return render_template('changePassword.html')
+
+@app.route('/changeAdminPassword')
+def changeAdminPassword():
+    return render_template('changeAdminPassword.html')
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return render_template('login.html')
 
 @app.route('/register')
 def register():

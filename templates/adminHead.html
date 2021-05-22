@@ -11,38 +11,23 @@
   <div class="header">
     <form id="login-form" method="post" method="POST">
       <a
-        href="<?=site_url('admin/loadViewOrders') ?>"
+        href="{{ url_for('.viewOrders') }}"
         class="menu-item"
         value="View orders"
       >
         View Orders
       </a>
+
       <span class="space"></span>
       <a
-        href="<?=site_url('admin/loadViewCustomers') ?>"
-        class="menu-item"
-        value="View orders"
-      >
-        View Customers
-      </a>
-      <span class="space"></span>
-      <a
-        href="<?=site_url('admin/loadAddCustomers') ?>"
-        class="menu-item"
-        id="customer"
-      >
-        Add Customer
-      </a>
-      <span class="space"></span>
-      <a
-        href="<?=site_url('admin/changePassword') ?>"
+        href="{{ url_for('.changeAdminPassword') }}"
         class="menu-item"
         id="changePassword"
       >
         Change Password
       </a>
       <span class="logoutSpace"></span>
-      <a href="<?=site_url('admin/logout') ?>" class="menu-item" id="logout">
+      <a href="{{ url_for('.logout') }}" class="menu-item" id="logout">
         Logout
       </a>
     </form>
