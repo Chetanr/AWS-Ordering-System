@@ -25,25 +25,6 @@ New Order
                 <label for = "address" ><Strong>Customer Address:</Strong></label>
                 &nbsp &nbsp<input type = "text" id = "address" name = "address" class = "textbox">
             </div>
-            <div class = "stateZip">
-            <label for = "state" ><Strong>State:</Strong></label>
-                <select id = "state" name = "state" label = " ">
-                        <option value = "">Select a State</option>
-                        <option value = "NSW">NSW</option>
-                        <option value = "QLD">QLD</option>
-                        <option value = "SA">SA</option>
-                        <option value = "TAS">TAS</option>
-                        <option value = "WA">WA</option>
-                        <option value = "VIC">VIC</option>
-                </select>
-                &nbsp &nbsp<label for = "zip" ><Strong>Zip:</Strong></label>
-                &nbsp<input type = "text" name = "zip" id = "zip" class = "textbox" maxlength="4">
-            </div>
-
-            <div class = "phone">
-                <label for = "phone" ><Strong>Customer Phone:</Strong></label>
-                &nbsp &nbsp<input type = "text" name = "phone" id = "phone" class = "textbox" maxlength="10">
-            </div>
 
             <div class = "pic">
                 <label for = "pic" ><Strong>Drive link to file:</Strong></label>
@@ -64,14 +45,14 @@ New Order
                     <input list="sizes" name="print-only-size" id = "size"/></label>
                         <datalist id="sizes">
                             <option value="Select a size or enter a custom size">
-                            <option value="A4 (210 x 297)">
-                            <option value="A3 (297 x 420)">
-                            <option value="A2 (420 x 594)">
-                            <option value="A1 (594 x 841)">
-                            <option value="A0 (841 x 1189)">
-                            <option value="B2 (500 x 707)">
-                            <option value="B1 (707 x 1000)">
-                            <option value="B0 (1000 x 1414)">
+                            <option value="A4">
+                            <option value="A3">
+                            <option value="A2">
+                            <option value="A1">
+                            <option value="A0">
+                            <option value="B2">
+                            <option value="B1">
+                            <option value="B0">
                         </datalist>
                     &nbsp<label for = "type" >mm</label>
                 </div>
@@ -94,21 +75,21 @@ New Order
                     <input list="sizes" name="document-size" id = "size"/></label>
                         <datalist id="sizes">
                             <option value="Select a size or enter a custom size">
-                            <option value="A4 (210 x 297)">
-                            <option value="A3 (297 x 420)">
-                            <option value="A2 (420 x 594)">
-                            <option value="A1 (594 x 841)">
-                            <option value="A0 (841 x 1189)">
-                            <option value="B2 (500 x 707)">
-                            <option value="B1 (707 x 1000)">
-                            <option value="B0 (1000 x 1414)">
+                            <option value="A4">
+                            <option value="A3">
+                            <option value="A2">
+                            <option value="A1">
+                            <option value="A0">
+                            <option value="B2">
+                            <option value="B1">
+                            <option value="B0">
                         </datalist>
                     &nbsp<label for = "type" >mm</label>
                 </div>
                 <div class = "type">
                     <label for = "type" >Orientation:</label>
                     <select id = "type" name = "document-type" label = " ">
-                        <option value = "none">Select an orientation</option>
+                        <option value = "none">Select an orientation:</option>
                         <option value = "landscape">Landscape</option>
                         <option value = "portrait">Portrait</option>
                     </select>
@@ -125,28 +106,28 @@ New Order
                     <input list="sizes" name="canvas-only-size" id = "size"/></label>
                         <datalist id="sizes">
                             <option value="Select a size or enter a custom size">
-                            <option value="A4 (210 x 297)">
-                            <option value="A3 (297 x 420)">
-                            <option value="A2 (420 x 594)">
-                            <option value="A1 (594 x 841)">
-                            <option value="A0 (841 x 1189)">
-                            <option value="B2 (500 x 707)">
-                            <option value="B1 (707 x 1000)">
-                            <option value="B0 (1000 x 1414)">
+                            <option value="A4">
+                            <option value="A3">
+                            <option value="A2">
+                            <option value="A1">
+                            <option value="A0">
+                            <option value="B2">
+                            <option value="B1">
+                            <option value="B0">
                         </datalist>
                     &nbsp<label for = "type" >mm</label>
                 </div>
                 <div class = "type">
                     <label for = "type" >Orientation:</label>
                     <select id = "type" name = "canvas-only-type" label = " ">
-                        <option value = "none">Select an orientation</option>
+                        <option value = "none">Select an orientation:</option>
                         <option value = "landscape">Landscape</option>
                         <option value = "portrait">Portrait</option>
                     </select>
                 </div>
                 <div class = "submit-button">
                     <button type = "submit" id = "submit">Place Order</button>
-                    <label id = "invalid-label" name = "invalid"><?php echo isset($error) ? $error : ''; ?></label>
+                    <label id = "invalid-label" name = "invalid">{{invalid}}</label>
                 </div>
             </div>
         </form>

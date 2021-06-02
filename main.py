@@ -2,13 +2,12 @@ from os import stat
 from flask import *
 import boto3
 import json
+from jinja2.utils import consume
 import requests
 from botocore.exceptions import ClientError
 from boto3.dynamodb.conditions import Key
 from decimal import Decimal
 from aws_requests_auth.aws_auth import AWSRequestsAuth
-
-from jinja2.utils import consume
 
 
 app = Flask(__name__)
@@ -27,6 +26,12 @@ def root():
 
 @app.route('/viewOrders')
 def viewOrders():
+    auth = AWSRequestsAuth(aws_access_key='AKIA4P2RQVNEPSRFQ6VB',
+                       aws_secret_access_key='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',
+                       aws_host='x815zgcusj.execute-api.us-east-1.amazonaws.com',
+                       aws_region='us-east-1',
+                       aws_service='execute-api')
+    response = requests.get("https://x815zgcusj.execute-api.us-east-1.amazonaws.com/orders/getorders?", auth=auth).json()
     return render_template('viewOrders.html')
 
 @app.route('/newOrder')
@@ -37,9 +42,6 @@ def newOrder():
 def placeOrder():
     customer_name = request.form['customer']
     address = request.form['address']
-    state = request.form['state']
-    zip = request.form['zip']
-    phone = request.form['phone']
     file = request.form['file']
     order_type = request.form['ordertype']
     if (order_type == "photo"):
@@ -51,17 +53,34 @@ def placeOrder():
     elif (order_type == "doc"):
         size = request.form['document-size']
         orientation = request.form['document-type']
+
+    if (customer_name or address or file or size or orientation != ""):
+        order_num = session['totalOrders'] + 1
+        auth = AWSRequestsAuth(aws_access_key='AKIA4P2RQVNEPSRFQ6VB',
+                       aws_secret_access_key='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',
+                       aws_host='qktj7cxwqd.execute-api.us-east-1.amazonaws.com',
+                       aws_region='us-east-1',
+                       aws_service='execute-api')
+        response = requests.post("https://qktj7cxwqd.execute-api.us-east-1.amazonaws.com/createOrder/neworder?",params= {"address": address, "customer":customer_name, "email":session['username'], "file":file, "order_num":order_num, "order_type":order_type, "orientation":orientation, "size":"A1"}, auth=auth)
+        app.logger.info(response.json())
+        session['totalOrders'] = order_num
+        previousOrders()
+        return render_template('viewOrders.html')
+    else:
+        return render_template('newOrder.html', invalid = "Please enter all the fields.!")
     
-    # check if any field is left empty
-    if (customer_name or address or state or zip or phone or file or size or orientation):
-        return render_template('newOrder.html', error = "Please enter all the fields.!")
     
-    #code to insert order into database
-    return size
 
 @app.route('/previousOrders')
 def previousOrders():
-    return render_template('viewPreviousOrders.html')
+    auth = AWSRequestsAuth(aws_access_key='AKIA4P2RQVNEPSRFQ6VB',
+                       aws_secret_access_key='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',
+                       aws_host='x815zgcusj.execute-api.us-east-1.amazonaws.com',
+                       aws_region='us-east-1',
+                       aws_service='execute-api')
+    response = requests.get("https://x815zgcusj.execute-api.us-east-1.amazonaws.com/orders/getorders?", auth=auth).json()
+    app.logger.info(response)
+    return render_template('viewPreviousOrders.html', orders = response)
 
 @app.route('/changePassword')
 def changePassword():
@@ -86,14 +105,28 @@ def login():
                        aws_region='us-east-1',
                        aws_service='execute-api')
     response = requests.get("https://ys4vvs9479.execute-api.us-east-1.amazonaws.com/getUser/getuser?",params= {"email":email}, auth=auth).json()
+    if (response is False):
+        return render_template('login.html',invalid="id or password is invalid. Try again.!")
     if (response['password'] == password):
         session['username'] = email
+        setSession()
         if (email == 'admin'):
             return render_template('adminHead.html')
         else:
             return render_template('custHead.html')
     else:
-        return render_template('login.html',invalid="id or password in invalid")
+        return render_template('login.html',invalid="id or password is invalid. Try again.!")
+
+def setSession():
+    auth = AWSRequestsAuth(aws_access_key='AKIA4P2RQVNEPSRFQ6VB',
+                       aws_secret_access_key='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',
+                       aws_host='x815zgcusj.execute-api.us-east-1.amazonaws.com',
+                       aws_region='us-east-1',
+                       aws_service='execute-api')
+    response = requests.get("https://x815zgcusj.execute-api.us-east-1.amazonaws.com/orders/getorders/", auth=auth).json()
+    session['orders'] = response['Items']
+    session['totalOrders'] = response['Count']
+
 
 @app.route('/register')
 def register():
@@ -118,12 +151,4 @@ def register_user():
 
 
 if __name__ == '__main__':
-    # This is used when running locally only. When deploying to Google App
-    # Engine, a webserver process such as Gunicorn will serve the app. This
-    # can be configured by adding an `entrypoint` to app.yaml.
-
-    # Flask's development server will automatically serve static files in
-    # the "static" directory. See:
-    # http://flask.pocoo.org/docs/1.0/quickstart/#static-files. Once deployed,
-    # App Engine itself will serve those files as configured in app.yaml.
     app.run(host='127.0.0.1', port=8080, debug=True)
