@@ -33,7 +33,11 @@ def viewOrders():
                        aws_region='us-east-1',
                        aws_service='execute-api')
     response = requests.get("https://x815zgcusj.execute-api.us-east-1.amazonaws.com/orders/getorders?", auth=auth).json()
-    return render_template('viewOrders.html')
+    return render_template('viewOrders.html', orders = response)
+
+@app.route('/edit')
+def edit():
+    return "hi"
 
 @app.route('/newOrder')
 def newOrder():
@@ -72,7 +76,7 @@ def placeOrder():
                        aws_region='us-east-1',
                        aws_service='execute-api')
         response = requests.get("https://x815zgcusj.execute-api.us-east-1.amazonaws.com/orders/getorders?", auth=auth).json()
-        return render_template('viewPreviousOrders.html', orders = response)
+        return render_template('viewPreviousOrders.html', orders = response, email=session['username'])
     else:
         return render_template('newOrder.html', invalid = "Please enter all the fields.!")
     
@@ -85,7 +89,8 @@ def previousOrders():
                        aws_region='us-east-1',
                        aws_service='execute-api')
     response = requests.get("https://x815zgcusj.execute-api.us-east-1.amazonaws.com/orders/getorders?", auth=auth).json()
-    return render_template('viewPreviousOrders.html', orders = response)
+    return render_template('viewPreviousOrders.html', orders = response, email = session['username'])
+
 
 @app.route('/changePassword')
 def changePassword():

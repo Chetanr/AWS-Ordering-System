@@ -11,7 +11,7 @@
       href="{{ url_for('static', filename='viewPreviousOrders.css') }}"
     />
     <br />
-    <div id="sort-div">
+    <!-- <div id="sort-div">
       <form method="POST" action="<?php echo site_url('admin/filterOrders');?>">
         <select name="sort">
           <option value="All">All</option>
@@ -22,63 +22,44 @@
         </select>
         <button type="submit" id="submit">Update</button>
       </form>
-    </div>
+    </div> -->
     <div class="table-div">
-      <form method="POST" action="<?php echo site_url('admin/editOrder');?>">
+      <form method="POST" action="{{ url_for('.viewOrders') }}">
         <table class="table">
           <thead>
             <tr>
-              <th>Order # &nbsp</th>
-              <th>Item # &nbsp</th>
-              <th>Client &nbsp</th>
-              <th>Customer &nbsp</th>
-              <th>Address &nbsp</th>
-              <th>Phone &nbsp</th>
-              <th>Status &nbsp</th>
-              <th>Size &nbsp</th>
-              <th>Order Date &nbsp</th>
-              <th>Order Kind &nbsp</th>
-              <th>Orientation &nbsp</th>
-              <th>Border &nbsp</th>
-              <th>Tracking Number &nbsp</th>
-              <th>Courier Company &nbsp</th>
+              <th>Item Number</th>
+              <th>Customer</th>
+              <th>Address</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th>Size</th>
+              <th>Order Kind</th>
+              <th>Orientation</th>
+              <th>Tracking Number</th>
+              <th>Courier Company</th>
               <th></th>
             </tr>
           </thead>
           <tbody>
-            <?php if($h->num_rows() > 0){ foreach($h->result() as $row){ ?>
+            {%for order in orders['Items']%}
             <tr rowspan="1">
-              <td colspan="1"><?php echo $row->order_num; ?>&nbsp</td>
-              <td colspan="1"><?php echo $row->sub_order_num; ?>&nbsp</td>
-              <td colspan="1"><?php echo $row->company_name; ?>&nbsp</td>
-              <td colspan="1"><?php echo $row->customer; ?>&nbsp</td>
-              <td colspan="1"><?php echo $row->address; ?>&nbsp</td>
-              <td colspan="1"><?php echo $row->phone; ?>&nbsp</td>
-              <td colspan="1"><?php echo $row->status; ?>&nbsp</td>
-              <td colspan="1"><?php echo $row->size; ?>&nbsp</td>
-              <td colspan="1"><?php echo $row->order_date; ?>&nbsp</td>
-              <td colspan="1"><?php echo $row->order_kind; ?>&nbsp</td>
-              <td colspan="1"><?php echo $row->order_type; ?>&nbsp</td>
-              <td colspan="1"><?php echo $row->order_sub_type; ?>&nbsp</td>
-              <td colspan="1"><?php echo $row->tracking_num; ?>&nbsp</td>
-              <td colspan="1"><?php echo $row->courier_company; ?>&nbsp</td>
+              <td colspan="1">{{order['order_num']}}</td>
+              <td colspan="1">{{order['customer']}}</td>
+              <td colspan="1">{{order['address'].replace("%20", " ")}}</td>
+              <td colspan="1">{{order['date']}}</td>
+              <td colspan="1">{{order['status']}}</td>
+              <td colspan="1">{{order['size']}}</td>
+              <td colspan="1">{{order['order_type']}}</td>
+              <td colspan="1">{{order['orientation']}}</td>
+              <td colspan="1">{{order['tracking_num']}}</td>
+              <td colspan="1">{{order['courier_company']}}</td>
               <td>
-                <a
-                  href="<?php echo site_url('admin/editOrder/'.$row->sub_order_num);?>"
-                  >Edit</a
-                >
+                <a href="{{url_for('.edit')}}">Edit</a>
                 &nbsp
-                <a
-                  href="<?php echo site_url('admin/printOrder/'.$row->sub_order_num);?>"
-                  >Print</a
-                >
               </td>
             </tr>
-            <?php } }else{ ?>
-            <tr>
-              <td>No order(s) found...</td>
-            </tr>
-            <?php } ?>
+            {%endfor%}
           </tbody>
         </table>
       </form>

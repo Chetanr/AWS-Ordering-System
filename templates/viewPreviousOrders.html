@@ -29,17 +29,20 @@ View Previous Orders
             </thead>
             <tbody>
                 {%for order in orders['Items']%}
+                {% if order['email'] == email %}
                 <tr rowspan = "1">
                     <td colspan = "1">{{order['order_num']}}</td>
                     <td colspan = "1">{{order['customer']}}</td>
                     <td colspan = "1">{{order['address'].replace("%20", " ")}}</td>
                     <td colspan = "1">{{order['date']}}</td>
                     <td colspan = "1">{{order['status']}}</td>
+                    <td colspan = "1">{{order['size']}}</td>
                     <td colspan = "1">{{order['order_type']}}</td>
                     <td colspan = "1">{{order['orientation']}}</td>
                     <td colspan = "1">{{order['tracking_num']}}</td>
                     <td colspan = "1">{{order['courier_company']}}</td>
                 </tr>
+                {%endif%}
                 {%endfor%}
             </tbody>
         </table>
