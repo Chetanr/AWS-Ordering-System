@@ -8,6 +8,7 @@ from botocore.exceptions import ClientError
 from boto3.dynamodb.conditions import Key
 from decimal import Decimal
 from aws_requests_auth.aws_auth import AWSRequestsAuth
+import datetime
 
 
 app = Flask(__name__)
@@ -56,19 +57,24 @@ def placeOrder():
 
     if (customer_name or address or file or size or orientation != ""):
         order_num = session['totalOrders'] + 1
+        date = datetime.datetime.now().date()
+        status = "RECEIVED"
         auth = AWSRequestsAuth(aws_access_key='AKIA4P2RQVNEPSRFQ6VB',
                        aws_secret_access_key='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',
                        aws_host='qktj7cxwqd.execute-api.us-east-1.amazonaws.com',
                        aws_region='us-east-1',
                        aws_service='execute-api')
-        response = requests.post("https://qktj7cxwqd.execute-api.us-east-1.amazonaws.com/createOrder/neworder?",params= {"address": address, "customer":customer_name, "email":session['username'], "file":file, "order_num":order_num, "order_type":order_type, "orientation":orientation, "size":"A1"}, auth=auth)
-        app.logger.info(response.json())
+        response = requests.post("https://qktj7cxwqd.execute-api.us-east-1.amazonaws.com/createOrder/neworder?",params= {"address": address.replace(" ","%20"), "status":status, "date":date, "customer":customer_name, "email":session['username'], "file":file, "order_num":order_num, "order_type":order_type, "orientation":orientation, "size":"A1"}, auth=auth)
         session['totalOrders'] = order_num
-        previousOrders()
-        return render_template('viewOrders.html')
+        auth = AWSRequestsAuth(aws_access_key='AKIA4P2RQVNEPSRFQ6VB',
+                       aws_secret_access_key='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',
+                       aws_host='x815zgcusj.execute-api.us-east-1.amazonaws.com',
+                       aws_region='us-east-1',
+                       aws_service='execute-api')
+        response = requests.get("https://x815zgcusj.execute-api.us-east-1.amazonaws.com/orders/getorders?", auth=auth).json()
+        return render_template('viewPreviousOrders.html', orders = response)
     else:
         return render_template('newOrder.html', invalid = "Please enter all the fields.!")
-    
     
 
 @app.route('/previousOrders')
@@ -79,7 +85,6 @@ def previousOrders():
                        aws_region='us-east-1',
                        aws_service='execute-api')
     response = requests.get("https://x815zgcusj.execute-api.us-east-1.amazonaws.com/orders/getorders?", auth=auth).json()
-    app.logger.info(response)
     return render_template('viewPreviousOrders.html', orders = response)
 
 @app.route('/changePassword')
