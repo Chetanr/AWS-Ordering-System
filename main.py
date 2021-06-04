@@ -35,9 +35,51 @@ def viewOrders():
     response = requests.get("https://x815zgcusj.execute-api.us-east-1.amazonaws.com/orders/getorders?", auth=auth).json()
     return render_template('viewOrders.html', orders = response)
 
-@app.route('/edit')
+@app.route('/edit', methods=['POST'])
 def edit():
-    return "hi"
+    order_num = request.form['order_num']
+    customer = request.form['customer']
+    file = request.form['file']
+    email = request.form['email']
+    address = request.form['address'].replace("%20", " ")
+    date = request.form['date']
+    size = request.form['size']
+    order_type = request.form['order_type']
+    orientation = request.form['orientation']
+    tracking_num = request.form['tracking_num']
+    courier_company = request.form['courier_company']
+    orders = [order_num, customer, address, date, size, order_type,orientation, tracking_num, courier_company, file, email]
+    return render_template('editOrders.html', orders = orders)
+
+@app.route('/update', methods=['POST'])
+def update():
+    order_num = request.form['order_num']
+    customer = request.form['customer']
+    address = request.form['address'].replace(" ", "%20")
+    date = request.form['date']
+    size = request.form['size']
+    status = request.form['status']
+    file = request.form['file']
+    email = request.form['email']
+    order_type = request.form['order_type']
+    orientation = request.form['orientation']
+    tracking_num = request.form['tracking_num']
+    courier_company = request.form['courier_company']
+    app.logger.info(order_num)
+    auth = AWSRequestsAuth(aws_access_key='AKIA4P2RQVNEPSRFQ6VB',
+                       aws_secret_access_key='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',
+                       aws_host='b5xkf14mbk.execute-api.us-east-1.amazonaws.com',
+                       aws_region='us-east-1',
+                       aws_service='execute-api')
+    response = requests.put("https://b5xkf14mbk.execute-api.us-east-1.amazonaws.com/update/updateorder?", params={"tracking_num": tracking_num,"status":status, "order_num":order_num, "courier_company":courier_company,"status":status}, auth=auth)
+    
+    auth = AWSRequestsAuth(aws_access_key='AKIA4P2RQVNEPSRFQ6VB',
+                       aws_secret_access_key='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',
+                       aws_host='x815zgcusj.execute-api.us-east-1.amazonaws.com',
+                       aws_region='us-east-1',
+                       aws_service='execute-api')
+    response = requests.get("https://x815zgcusj.execute-api.us-east-1.amazonaws.com/orders/getorders?", auth=auth).json()
+    return render_template('viewOrders.html', orders = response)
 
 @app.route('/newOrder')
 def newOrder():

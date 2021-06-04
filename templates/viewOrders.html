@@ -11,26 +11,16 @@
       href="{{ url_for('static', filename='viewPreviousOrders.css') }}"
     />
     <br />
-    <!-- <div id="sort-div">
-      <form method="POST" action="<?php echo site_url('admin/filterOrders');?>">
-        <select name="sort">
-          <option value="All">All</option>
-          <option value="RECEIVED">Received</option>
-          <option value="IN PROGRESS">In Progress</option>
-          <option value="SHIPPED">Order Shipped</option>
-          <option value="CANCELLED">Cancelled</option>
-        </select>
-        <button type="submit" id="submit">Update</button>
-      </form>
-    </div> -->
+    <label id="invalid" name="invalid">{{invalid}}</label>
     <div class="table-div">
-      <form method="POST" action="{{ url_for('.viewOrders') }}">
         <table class="table">
           <thead>
             <tr>
               <th>Item Number</th>
               <th>Customer</th>
+              <th>file</th>
               <th>Address</th>
+              <th>Email</th>
               <th>Date</th>
               <th>Status</th>
               <th>Size</th>
@@ -46,17 +36,33 @@
             <tr rowspan="1">
               <td colspan="1">{{order['order_num']}}</td>
               <td colspan="1">{{order['customer']}}</td>
+              <td colspan="1">{{order['file']}}</td>
               <td colspan="1">{{order['address'].replace("%20", " ")}}</td>
+              <td colspan="1">{{order['email']}}</td>
               <td colspan="1">{{order['date']}}</td>
-              <td colspan="1">{{order['status']}}</td>
+              <td colspan="1">{{order['order_status']}}</td>
               <td colspan="1">{{order['size']}}</td>
               <td colspan="1">{{order['order_type']}}</td>
               <td colspan="1">{{order['orientation']}}</td>
               <td colspan="1">{{order['tracking_num']}}</td>
               <td colspan="1">{{order['courier_company']}}</td>
               <td>
-                <a href="{{url_for('.edit')}}">Edit</a>
-                &nbsp
+                <form method="POST" action="{{ url_for('.edit') }}">
+                  <input type="hidden" name="order_num" value = "{{ order['order_num'] }}"></input>
+                  <input type="hidden" name="customer" value = "{{ order['customer'] }}"></input>
+                  <input type="hidden" name="file" value = "{{ order['file'] }}"></input>
+                  <input type="hidden" name="address" value = "{{order['address']}}"></input>
+                  <input type="hidden" name="email" value = "{{order['email']}}"></input>
+                  <input type="hidden" name="date" value = "{{ order['date'] }}"></input>
+                  <input type="hidden" name="status" value = "{{ order['status'] }}"></input>
+                  <input type="hidden" name="size" value = "{{ order['size'] }}"></input>
+                  <input type="hidden" name="order_type" value = "{{ order['order_type'] }}"></input>
+                  <input type="hidden" name="orientation" value = "{{ order['orientation'] }}"></input>
+                  <input type="hidden" name="tracking_num" value = "{{ order['tracking_num'] }}"></input>
+                  <input type="hidden" name="courier_company" value = "{{ order['courier_company'] }}"></input>
+                  <button type="submit" id="submit">Edit </button>
+                  <!-- &nbsp -->
+                </form>
               </td>
             </tr>
             {%endfor%}
