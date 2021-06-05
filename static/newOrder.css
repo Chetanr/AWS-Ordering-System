@@ -1,12 +1,12 @@
 #order-form {
-	display: block;
-	padding: 1.5%;
-	text-align: center;
-	font-size: 15px;
-	font-family: Arial, Helvetica, sans-serif;
-	float: center;
-	margin: auto;
-	width: 80%;
+  display: block;
+  padding: 1.5%;
+  text-align: center;
+  font-size: 15px;
+  font-family: Arial, Helvetica, sans-serif;
+  float: center;
+  margin: auto;
+  width: 80%;
 }
 
 .customer,
@@ -16,7 +16,7 @@
 .canvas-class,
 .phone,
 .pic {
-	padding: 1.5%;
+  padding: 1.5%;
 }
 
 .size,
@@ -24,79 +24,83 @@
 .sub-type,
 .frame,
 .mount {
-	padding: 1.5%;
+  padding: 1.5%;
 }
 
 #size {
-	width: 100px;
-	display: inline-block;
+  width: 100px;
+  display: inline-block;
 }
 
 #submit {
-	background: linear-gradient(to bottom, #44c767 5%, #5cbf2a 100%);
-	background-color: #44c767;
-	border-radius: 20px;
-	border: 1px solid #18ab29;
-	display: inline-block;
-	cursor: pointer;
-	color: #ffffff;
-	font-family: Arial;
-	font-size: 15px;
-	padding: 10px 25px;
-	text-decoration: none;
-	text-shadow: 0px 1px 0px #2f6627;
+  background: linear-gradient(to bottom, #44c767 5%, #5cbf2a 100%);
+  background-color: #44c767;
+  border-radius: 20px;
+  border: 1px solid #18ab29;
+  display: inline-block;
+  cursor: pointer;
+  color: #ffffff;
+  font-family: Arial;
+  font-size: 15px;
+  padding: 10px 25px;
+  text-decoration: none;
+  text-shadow: 0px 1px 0px #2f6627;
 }
 
 .submit-button,
 .stateZip {
-	padding: 1.5%;
+  padding: 1.5%;
 }
 
 input.textbox {
-	display: inline;
+  display: inline;
 }
 
 label {
-	display: inline-block;
+  display: inline-block;
 }
 
 #invalid-label {
-	color: red;
-	font-size: 13px;
-	text-align: center;
+  color: red;
+  font-size: 13px;
+  text-align: center;
 }
 
 #comments {
-	height: 100px;
-	width: 350px;
+  height: 100px;
+  width: 350px;
 }
 
 #address {
-	width: 250px;
-	height: 25px;
+  width: 250px;
+  height: 25px;
 }
 
 #state {
-	height: 20px;
-	width: 105px;
+  height: 20px;
+  width: 105px;
 }
 
 #zip {
-	width: 50px;
-	height: 20px;
+  width: 50px;
+  height: 20px;
 }
 
 #customer_name {
-	width: 200px;
-	height: 25px;
+  width: 200px;
+  height: 25px;
 }
 
 #phone {
-	width: 150px;
-	height: 25px;
+  width: 150px;
+  height: 25px;
 }
 
 #link {
-	width: 250px;
-	height: 25px;
+  width: 250px;
+  height: 25px;
+}
+
+#upload-file {
+  padding-left: 40%;
 }

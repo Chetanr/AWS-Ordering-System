@@ -1,4 +1,4 @@
-from os import stat
+import os
 from flask import *
 import boto3
 import json
@@ -7,6 +7,8 @@ import requests
 from botocore.exceptions import ClientError
 from boto3.dynamodb.conditions import Key
 from decimal import Decimal
+
+from werkzeug.utils import secure_filename
 from aws_requests_auth.aws_auth import AWSRequestsAuth
 import datetime
 
@@ -97,8 +99,23 @@ def newOrder():
 def placeOrder():
     customer_name = request.form['customer']
     address = request.form['address']
-    file = request.form['file']
     order_type = request.form['ordertype']
+    file = request.files['upload']
+    app.logger.info("file 1", file)
+    if (file is None):
+        file = request.form['file']
+    else:
+        bucket_name = 's3793263-bucket'
+        s3 = boto3.client('s3')
+        file_name = secure_filename(file.filename)
+        file.save(file_name)
+        response = s3.upload_file(
+                    Bucket = bucket_name,
+                    Filename=file_name,
+                    Key = file_name
+                    )
+        link = "https://s3793263-bucket.s3.amazonaws.com/" + file.filename 
+
     if (order_type == "photo"):
         size = request.form['print-only-size']
         orientation = request.form['print-only-type']
@@ -109,6 +126,7 @@ def placeOrder():
         size = request.form['document-size']
         orientation = request.form['document-type']
 
+    app.logger.info("file is", file)
     if (customer_name or address or file or size or orientation != ""):
         order_num = session['totalOrders'] + 1
         date = datetime.datetime.now().date()
@@ -118,7 +136,7 @@ def placeOrder():
                        aws_host='qktj7cxwqd.execute-api.us-east-1.amazonaws.com',
                        aws_region='us-east-1',
                        aws_service='execute-api')
-        response = requests.post("https://qktj7cxwqd.execute-api.us-east-1.amazonaws.com/createOrder/neworder?",params= {"address": address.replace(" ","%20"), "status":status, "date":date, "customer":customer_name, "email":session['username'], "file":file, "order_num":order_num, "order_type":order_type, "orientation":orientation, "size":"A1"}, auth=auth)
+        response = requests.post("https://qktj7cxwqd.execute-api.us-east-1.amazonaws.com/createOrder/neworder?",params= {"address": address.replace(" ","%20"), "status":status, "date":date, "customer":customer_name, "email":session['username'], "file":link, "order_num":order_num, "order_type":order_type, "orientation":orientation, "size":"A1"}, auth=auth)
         session['totalOrders'] = order_num
         auth = AWSRequestsAuth(aws_access_key='AKIA4P2RQVNEPSRFQ6VB',
                        aws_secret_access_key='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',
