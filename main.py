@@ -51,18 +51,26 @@ def edit():
     orders = [order_num, customer, address, date, size, order_type,orientation, tracking_num, courier_company, file, email]
     return render_template('editOrders.html', orders = orders)
 
+@app.route('/updatePasword', methods=['POST'])
+def updatePassword():
+    email = session['username']
+    password = request.form['currentPassword']
+    newPassword = request.form['newPassword']
+    auth = AWSRequestsAuth(aws_access_key='AKIA4P2RQVNEPSRFQ6VB',
+                       aws_secret_access_key='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',
+                       aws_host='5ckzyq7iqf.execute-api.us-east-1.amazonaws.com',
+                       aws_region='us-east-1',
+                       aws_service='execute-api')
+    response = requests.put('https://5ckzyq7iqf.execute-api.us-east-1.amazonaws.com/changePassword/updatepassword?', params={"email":email, "password":password, "newPassword":newPassword}, auth=auth)
+    if (response.json() is True):
+        return render_template('changePassword.html', invalid = "", valid="Password has been changed successfully.!")
+    else:
+       return render_template('changePassword.html', invalid = "Your current password is invalid. Please try again.!", valid = "") 
+
 @app.route('/update', methods=['POST'])
 def update():
     order_num = request.form['order_num']
-    customer = request.form['customer']
-    address = request.form['address'].replace(" ", "%20")
-    date = request.form['date']
-    size = request.form['size']
     status = request.form['status']
-    file = request.form['file']
-    email = request.form['email']
-    order_type = request.form['order_type']
-    orientation = request.form['orientation']
     tracking_num = request.form['tracking_num']
     courier_company = request.form['courier_company']
     app.logger.info(order_num)
