@@ -29,6 +29,7 @@ View Previous Orders
                 </tr>
             </thead>
             <tbody>
+                {%if orders == ""%}
                 {%for order in orders['Items']%}
                 {% if order['email'] == email %}
                 <tr rowspan = "1">
@@ -46,6 +47,11 @@ View Previous Orders
                 </tr>
                 {%endif%}
                 {%endfor%}
+                {%else%}
+                <tr>
+                    <td><Strong>No orders found...Please place an order</Strong></td>
+                </tr>
+                {%endif%}
             </tbody>
         </table>
     </div>

@@ -32,6 +32,7 @@
             </tr>
           </thead>
           <tbody>
+            {%if orders == ""%}
             {%for order in orders['Items']%}
             <tr rowspan="1">
               <td colspan="1">{{order['order_num']}}</td>
@@ -61,11 +62,15 @@
                   <input type="hidden" name="tracking_num" value = "{{ order['tracking_num'] }}"></input>
                   <input type="hidden" name="courier_company" value = "{{ order['courier_company'] }}"></input>
                   <button type="submit" id="submit">Edit </button>
-                  <!-- &nbsp -->
                 </form>
               </td>
             </tr>
             {%endfor%}
+            {%else%}
+            <tr>
+              <td><Strong>No orders found...</Strong></td>
+            </tr>
+            {%endif%}
           </tbody>
         </table>
       </form>

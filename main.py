@@ -75,7 +75,6 @@ def update():
     status = request.form['status']
     tracking_num = request.form['tracking_num']
     courier_company = request.form['courier_company']
-    app.logger.info(order_num)
     auth = AWSRequestsAuth(aws_access_key='AKIA4P2RQVNEPSRFQ6VB',
                        aws_secret_access_key='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',
                        aws_host='b5xkf14mbk.execute-api.us-east-1.amazonaws.com',
@@ -101,7 +100,6 @@ def placeOrder():
     address = request.form['address']
     order_type = request.form['ordertype']
     file = request.files['upload']
-    app.logger.info("file 1", file)
     if (file is None):
         file = request.form['file']
     else:
@@ -126,7 +124,6 @@ def placeOrder():
         size = request.form['document-size']
         orientation = request.form['document-type']
 
-    app.logger.info("file is", file)
     if (customer_name or address or file or size or orientation != ""):
         order_num = session['totalOrders'] + 1
         date = datetime.datetime.now().date()
@@ -220,7 +217,6 @@ def register_user():
                        aws_region='us-east-1',
                        aws_service='execute-api')
     response = requests.post("https://hkr41ye1c4.execute-api.us-east-1.amazonaws.com/live/register?",params= {"email":email, "password" : password}, auth=auth)
-    app.logger.info(response.json())
     if (response.json() is None):
         return render_template('login.html')
     else:
