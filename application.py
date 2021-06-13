@@ -29,11 +29,7 @@ def root():
 
 @app.route('/viewOrders')
 def viewOrders():
-    auth = AWSRequestsAuth(aws_access_key='KEY',
-                       aws_secret_access_key='KEY',
-                       aws_host='host',
-                       aws_region='region',
-                       aws_service='execute-api')
+    auth = "AWS_KEY_DETAILS"
     response = requests.get("https://x815zgcusj.execute-api.us-east-1.amazonaws.com/orders/getorders?", auth=auth).json()
     return render_template('viewOrders.html', orders = response)
 
@@ -58,11 +54,7 @@ def updatePassword():
     email = session['username']
     password = request.form['currentPassword']
     newPassword = request.form['newPassword']
-    auth = AWSRequestsAuth(aws_access_key='KEY',
-                       aws_secret_access_key='KEY',
-                       aws_host='host',
-                       aws_region='region',
-                       aws_service='execute-api')
+    auth = "AWS_KEY_DETAILS"
     response = requests.put('https://5ckzyq7iqf.execute-api.us-east-1.amazonaws.com/changePassword/updatepassword?', params={"email":email, "password":password, "newPassword":newPassword}, auth=auth)
     if (response.json() is True):
         return render_template('changePassword.html', invalid = "", valid="Password has been changed successfully.!")
@@ -75,11 +67,7 @@ def update():
     status = request.form['status']
     tracking_num = request.form['tracking_num']
     courier_company = request.form['courier_company']
-    auth = AWSRequestsAuth(aws_access_key='KEY',
-                       aws_secret_access_key='KEY',
-                       aws_host='host',
-                       aws_region='region',
-                       aws_service='execute-api')
+    auth = "AWS_KEY_DETAILS"
     response = requests.put("https://b5xkf14mbk.execute-api.us-east-1.amazonaws.com/update/updateorder?", params={"tracking_num": tracking_num,"status":status, "order_num":order_num, "courier_company":courier_company,"status":status}, auth=auth)
     
     auth = AWSRequestsAuth(aws_access_key='AKIA4P2RQVNEPSRFQ6VB',
@@ -128,18 +116,10 @@ def placeOrder():
         order_num = session['totalOrders'] + 1
         date = datetime.datetime.now().date()
         status = "RECEIVED"
-        auth = AWSRequestsAuth(aws_access_key='KEY',
-                       aws_secret_access_key='KEY',
-                       aws_host='host',
-                       aws_region='region',
-                       aws_service='execute-api')
+        auth = "AWS_KEY_DETAILS"
         response = requests.post("https://qktj7cxwqd.execute-api.us-east-1.amazonaws.com/createOrder/neworder?",params= {"address": address.replace(" ","%20"), "status":status, "date":date, "customer":customer_name, "email":session['username'], "file":link, "order_num":order_num, "order_type":order_type, "orientation":orientation, "size":"A1"}, auth=auth)
         session['totalOrders'] = order_num
-        auth = AWSRequestsAuth(aws_access_key='KEY',
-                       aws_secret_access_key='KEY',
-                       aws_host='host',
-                       aws_region='region',
-                       aws_service='execute-api')
+        auth = "AWS_KEY_DETAILS"
         response = requests.get("https://x815zgcusj.execute-api.us-east-1.amazonaws.com/orders/getorders?", auth=auth).json()
         return render_template('viewPreviousOrders.html', orders = response, email=session['username'])
     else:
@@ -148,11 +128,7 @@ def placeOrder():
 
 @app.route('/previousOrders')
 def previousOrders():
-    auth = AWSRequestsAuth(aws_access_key='KEY',
-                       aws_secret_access_key='KEY',
-                       aws_host='host',
-                       aws_region='region',
-                       aws_service='execute-api')
+    auth = "AWS_KEY_DETAILS"
     response = requests.get("https://x815zgcusj.execute-api.us-east-1.amazonaws.com/orders/getorders?", auth=auth).json()
     return render_template('viewPreviousOrders.html', orders = response, email = session['username'])
 
@@ -174,11 +150,7 @@ def logout():
 def login():
     email = request.form['user']
     password = request.form['password']
-    auth = AWSRequestsAuth(aws_access_key='KEY',
-                       aws_secret_access_key='KEY',
-                       aws_host='host',
-                       aws_region='region',
-                       aws_service='execute-api')
+    auth = "AWS_KEY_DETAILS"
     response = requests.get("https://ys4vvs9479.execute-api.us-east-1.amazonaws.com/getUser/getuser?",params= {"email":email}, auth=auth).json()
     if (response is False):
         return render_template('login.html',invalid="id or password is invalid. Try again.!")
@@ -193,11 +165,7 @@ def login():
         return render_template('login.html',invalid="id or password is invalid. Try again.!")
 
 def setSession():
-    auth = AWSRequestsAuth(aws_access_key='KEY',
-                       aws_secret_access_key='KEY',
-                       aws_host='host',
-                       aws_region='region',
-                       aws_service='execute-api')
+    auth = "AWS_KEY_DETAILS"
     response = requests.get("https://x815zgcusj.execute-api.us-east-1.amazonaws.com/orders/getorders/", auth=auth).json()
     session['orders'] = response['Items']
     session['totalOrders'] = response['Count']
@@ -211,11 +179,7 @@ def register():
 def register_user():
     email = request.form['email']
     password = request.form['password']
-    auth = AWSRequestsAuth(aws_access_key='KEY',
-                       aws_secret_access_key='KEY',
-                       aws_host='host',
-                       aws_region='region',
-                       aws_service='execute-api')
+    auth = "AWS_KEY_DETAILS"
     response = requests.post("https://hkr41ye1c4.execute-api.us-east-1.amazonaws.com/live/register?",params= {"email":email, "password" : password}, auth=auth)
     if (response.json() is None):
         return render_template('login.html')
